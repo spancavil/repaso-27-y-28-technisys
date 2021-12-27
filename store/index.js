@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 
 //Nuestros dos reducers que tendrán la lógica del manejos del store
 import CategoryReducer from "./reducers/categories.reducer";
-//import ProductsReducer from "./reducers/products.reducer";
+import ProductsReducer from "./reducers/products.reducer";
 //(import CartReducer from "./reducers/cart.reducer";
 
 //Thunk para realizar llamadas asíncronas
@@ -15,7 +15,7 @@ const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware))
 
 const RootReducer = combineReducers({
     categories: CategoryReducer,
-    //products: ProductsReducer,
+    products: ProductsReducer,
     // cart: CartReducer,
 })
 

@@ -1,5 +1,12 @@
 export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const GET_CATEGORIES_ERROR = 'GET_CATEGORIES_ERROR';
+export const SELECT_CATEGORY = 'SELECT_CATEGORY';
+
+
+export const selectCategory = (catId) => ({
+    type: SELECT_CATEGORY,
+    categoryId: catId 
+})
 
 //ACCION ASYNC
 export const getCategories = async (dispatch) => {
