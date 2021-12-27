@@ -1,4 +1,4 @@
-import { FILTERED_PRODUCTS, GET_PRODUCTS } from "../actions/products.actions";
+import { FILTERED_PRODUCTS, GET_PRODUCTS, SELECTED_PRODUCT } from "../actions/products.actions";
 
 const initialState = {
     products: [],
@@ -20,6 +20,13 @@ const ProductsReducer = (state = initialState, action) => {
             ...state,
             filteredProducts: productosFiltrados
             }
+
+        case SELECTED_PRODUCT:
+            const productSelected = state.products.find(prod => prod.id === action.productId);
+            return productSelected ?
+            {...state, selectedProduct: productSelected}
+            :
+            {...state, selected: null}
             
         default:
             return {

@@ -4,16 +4,23 @@ import { Text, TouchableOpacity, StyleSheet} from 'react-native'
 export const CategoryButton = ({title, handlePress}) => {
     return (
         <TouchableOpacity onPress={handlePress} style={styles.button} >
-            <Text>{title}</Text>
+            <Text style={styles.text}>{title}</Text>
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
     button: {
-        padding: 10,
-        backgroundColor: 'blue',
-        marginVertical: 10,
-        width: '50%'
+        backgroundColor: 'gray',
+        padding: 6,
+        width: '40%',
+        textAlign: 'center',
+        alignItems: 'center',
+        borderRadius: 7,
+        marginVertical: 50,
+        alignSelf: 'center'
+    },
+    text: {
+        fontSize: 25
     }
 })

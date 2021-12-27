@@ -3,6 +3,11 @@ export const FILTERED_PRODUCTS = "FILTERED_PRODUCTS";
 export const GET_PRODUCTS = "GET_PRODUCTS";
 export const PRODUCTS_ERROR = "PRODUCTS_ERROR";
 
+export const selectedProduct = (id) => ({
+    type: SELECTED_PRODUCT,
+    productId: id
+})
+
 export const filterProducts = (catId) => ({
     type: FILTERED_PRODUCTS,
     payload: catId,

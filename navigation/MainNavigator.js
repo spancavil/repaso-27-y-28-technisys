@@ -5,10 +5,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeStack } from './HomeStack';
+import {useSelector} from 'react-redux';
 
 export const MainNavigator = () => {
 
     const Tab = createBottomTabNavigator();
+    const cart = useSelector(state => state.cart.cart)
 
     return (
         <NavigationContainer>
@@ -47,7 +49,7 @@ export const MainNavigator = () => {
             name="HomeStack"
             component={HomeStack}
           />
-          <Tab.Screen name="Cart" component={Cart} options={{ tabBarBadge: 3 }}/>
+          <Tab.Screen name="Cart" component={Cart} options={cart.length !== 0 ? { tabBarBadge: cart.length }: null}/>
         </Tab.Navigator>
       </NavigationContainer>
     )
