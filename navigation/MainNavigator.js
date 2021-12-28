@@ -10,8 +10,9 @@ import { MyOrders } from '../screens/MyOrders';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { Register } from '../screens/Register';
 import { Login } from '../screens/Login';
-import { auth } from '../firebase/config';
+import { auth, db } from '../firebase/config';
 import { onAuthStateChanged, signOut} from 'firebase/auth';
+import { query, where, getDocs, collection } from 'firebase/firestore/lite';
 
 export const MainNavigator = () => {
 
@@ -19,33 +20,65 @@ export const MainNavigator = () => {
     const cart = useSelector(state => state.cart.cart)
 
     const [user,setUser] = useState()
+    const [orders, setOrders] = useState([])
 
     const handleSignOut = () => {
       signOut(auth).then(() => {
+        setOrders([]);
         // Sign-out successful.
       }).catch((error) => {
         // An error happened.
       });
     }
+    
+
+      //Obtención de las orders, y luego filtrado mediante email
+    const getOrders = async () => {
+        const querySnapshot = await getDocs(collection(db, "orders"));
+        const ordersComplete = []
+        querySnapshot.forEach((doc) => {
+          console.log(`${doc.id} => ${doc.data()}`);
+          ordersComplete.push({id: doc.id, ...doc.data() })
+        });
+        console.log(ordersComplete);
+        const ordersFiltered = ordersComplete.filter(order => order.buyer === auth.currentUser.email)
+        setOrders([...ordersFiltered]);
+    }
 
     useEffect(()=> {
-      //Logica para obtener usuario loggeado
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          // User is signed in, see docs for a list of available properties
-          // https://firebase.google.com/docs/reference/js/firebase.User
-          const uid = user.uid;
-          console.log(user);
-          setUser(user);
-          // ...
-        } else {
-          setUser(null)
-          // User is signed out
-          // ...
-        }
-      });
-    }, [])
+      if (user){
+          //Obtención de las orders, y luego filtrado mediante email
+          ( async ()=> {
+            const querySnapshot = await getDocs(collection(db, "orders"));
+            const ordersComplete = []
+            querySnapshot.forEach((doc) => {
+              console.log(`${doc.id} => ${doc.data()}`);
+              ordersComplete.push({id: doc.id, ...doc.data() })
+            });
+            console.log(ordersComplete);
+            const ordersFiltered = ordersComplete.filter(order => order.buyer === auth.currentUser.email)
+            setOrders([...ordersFiltered]);
+          })()
+      }
 
+    }, [user])
+
+    //Logica para obtener usuario loggeado
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const uid = user.uid;
+        console.log(user);
+        setUser(user);
+        // ...
+      } else {
+        setUser(null)
+        // User is signed out
+        // ...
+      }
+    });
+    
     return (
         <NavigationContainer>
         <Tab.Navigator
@@ -120,13 +153,16 @@ export const MainNavigator = () => {
             />
             <Tab.Screen 
               name="Cart"
-              component={Cart}
               options={cart.length !== 0 ? { tabBarBadge: cart.length }: null}
-            />
+            >
+              {(props) => <Cart {...props} getOrders={getOrders}></Cart>}
+            </Tab.Screen>
             <Tab.Screen
               name="My Orders"
-              component={MyOrders}
-            />
+            >
+              {/* "props" hace referencia a las que vienen por defecto que son route y navigation */}
+              {(props) => <MyOrders {...props} orders = {orders}></MyOrders>}
+            </Tab.Screen>
           </>
           :
           <>

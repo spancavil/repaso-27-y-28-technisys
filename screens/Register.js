@@ -24,7 +24,9 @@ export const Register = () => {
                 .catch(error => setError(error))
                 .finally( ()=> {
                     alert("Usuario creado!")
-                    setForm({username: "", email: "", password: "", confirmPass: ""})
+
+                    //Se desmonta el componente, por lo tanto no es necesario limpiar este form.
+                    // setForm({username: "", email: "", password: "", confirmPass: ""})
                 });
                 // ...
             })
