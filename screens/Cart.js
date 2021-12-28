@@ -11,9 +11,9 @@ export const Cart = () => {
 
     return (
         <>
+            <View style={styles.container}>
             {cart.length !== 0 ?
 
-            <View style={styles.container}>
                 <FlatList
                 data = {cart}
                 keyExtractor={producto => producto.id.toString()}
@@ -21,10 +21,10 @@ export const Cart = () => {
                     return <Item {...item} cart={true}/>
                 }}
                 />
-            </View>
             :
-                <Text>No hay productos en el carrito</Text>
+                <Text style={styles.text}>No hay productos en el carrito</Text>
             }           
+            </View>
         </>
     )
 }
@@ -32,6 +32,13 @@ export const Cart = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: '100%'
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center'
     },
+    text: {
+        fontFamily: 'Oswald',
+        fontSize: 25,
+    }
 })

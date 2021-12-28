@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, FlatList, ActivityIndicator } from 'react-native';
+import { View, FlatList, ActivityIndicator, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import { CategoryButton } from '../components/CategoryButton';
 import { selectCategory } from '../store/actions/categories.actions';
@@ -25,8 +25,8 @@ export const Home = ({navigation}) => {
 
     return (
         <>
+            <View style={styles.container}>
             {categories.length !== 0 ? 
-            <View>
                 <FlatList
                 data = {categories}
                 keyExtractor={category => category.toString()}
@@ -34,10 +34,23 @@ export const Home = ({navigation}) => {
                     return <CategoryButton title={item} handlePress={() => handleSelectCategory (item)}></CategoryButton>
                 }}
                 ></FlatList>
-            </View>
-            :
-            <ActivityIndicator size ="large" color='blue' />
+                :
+                <ActivityIndicator size ="large" color='blue' />
             }
+            </View>
         </>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    text: {
+        fontFamily: 'Oswald',
+        fontSize: 25,
+    }
+})
